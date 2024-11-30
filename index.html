@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>1pwn</title>
+    <style>
+        /* Global styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #0f0f0f;
+            color: #ff3333;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 5rem;
+            margin-top: 20vh;
+            color: #ff3333;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.5), 0 0 30px rgba(255, 0, 0, 0.6);
+            animation: neonPulse 1.5s infinite alternate;
+        }
+
+        p {
+            font-size: 1.5rem;
+            color: #f5f5f5;
+            margin-top: 20px;
+            letter-spacing: 1px;
+        }
+
+        .terminal {
+            font-size: 1.3rem;
+            color: #33ff33;
+            background-color: #1d1d1d;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 30px;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+            display: inline-block;
+            max-width: 80%;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Animations */
+        @keyframes neonPulse {
+            0% {
+                text-shadow: 0 0 10px rgba(255, 0, 0, 0.5), 0 0 20px rgba(255, 0, 0, 0.7);
+            }
+            100% {
+                text-shadow: 0 0 30px rgba(255, 0, 0, 1), 0 0 40px rgba(255, 0, 0, 0.8);
+            }
+        }
+
+        /* Loading animation */
+        .loading {
+            font-size: 2rem;
+            color: #ff3333;
+            margin-top: 40px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+        }
+
+        .blink {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Falling binary rain */
+        .binary-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .binary-rain span {
+            position: absolute;
+            font-size: 20px;
+            color: #00ff00;
+            animation: fall 5s infinite linear;
+            user-select: none;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <h1>1pwn</h1>
+    <p><h2>Welcome Pwners</h2></p>
+    <div class="terminal">
+        <p>Access granted. <h3>Welcome, hacker.</h3></p>
+    </div>
+    <p class="loading blink">Exploiting...</p>
+
+    <!-- Binary Rain Effect -->
+    <div class="binary-rain" id="binaryRain"></div>
+
+    <script>
+        // Simple fake terminal output function
+        function terminalOutput(text, delay) {
+            const terminal = document.querySelector('.terminal');
+            let currentText = '';
+            let index = 0;
+            let interval = setInterval(function () {
+                currentText += text[index];
+                terminal.innerHTML = currentText;
+                index++;
+                if (index === text.length) {
+                    clearInterval(interval);
+                }
+            }, delay);
+        }
+
+        // Simulate a sequence of commands
+        setTimeout(() => terminalOutput('🍔 (Eat)', 50), 1000);
+        setTimeout(() => terminalOutput('💤 (Sleep)', 80), 4000);
+        setTimeout(() => terminalOutput('💻 (Pwn)', 100), 7000);
+        setTimeout(() => terminalOutput('🔁 (Repeat)', 120), 8000);
+
+        // Binary rain effect
+        function generateBinaryRain() {
+            const rainContainer = document.getElementById('binaryRain');
+            const columns = window.innerWidth / 20;
+            const rows = window.innerHeight / 30;
+
+            // Create binary falling rain
+            for (let i = 0; i < columns; i++) {
+                createRainDrop(i * 20, Math.random() * window.innerHeight);
+            }
+
+            function createRainDrop(x, y) {
+                const span = document.createElement('span');
+                span.textContent = Math.random() > 0.5 ? '1' : '0';
+                span.style.left = `${x}px`;
+                span.style.top = `${y}px`;
+                span.style.animationDuration = `${Math.random() * 2 + 3}s`; // Random speed for variety
+                rainContainer.appendChild(span);
+                
+                // Reset position after animation ends
+                span.addEventListener('animationiteration', () => {
+                    span.style.top = '-30px';
+                    span.style.animationDuration = `${Math.random() * 2 + 3}s`; // Random speed on reset
+                });
+            }
+        }
+
+        generateBinaryRain();
+    </script>
+</body>
+</html>
+
+
+
+
+
